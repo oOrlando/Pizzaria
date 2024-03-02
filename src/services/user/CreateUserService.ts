@@ -19,20 +19,20 @@ class CreateUserService{
 
         const userAlreadyExists = await prismaClient.user.findFirst({
             where:{
-                email: email
-            }
+                email : String(email) 
+            } 
         })
 
         if (userAlreadyExists){
             throw new Error("User already exists")
         }
 
-        const passwordHash = await hash(password, 8)
+        const passwordHash = await hash(String(password), 8)
 
         const user = await prismaClient.user.create({
             data:{
-                name: name,
-                email: email,
+                name: String(name),
+                email: String(email),
                 password: passwordHash,
             },
             select:{
